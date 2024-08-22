@@ -13,8 +13,9 @@ public class GridManager : MonoBehaviour
 
    [SerializeField] public GameObject dotPrefab;
    [SerializeField] public GameObject[,] dotMatrix;
-    [SerializeField] private List<Dot> selectedDots = new List<Dot>();
+    [SerializeField] public List<Dot> selectedDots = new List<Dot>();
     [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private LevelList levelList;
     [SerializeField] private LevelData levelData;
     [SerializeField] private float fallDuration = 0.5f;
     
@@ -28,7 +29,7 @@ public class GridManager : MonoBehaviour
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
         dotMatrix = new GameObject[rows,columns];
-    CreateGrid();
+        LoadLevel(0);
    }
    private void Update() {
      if(selectedDots.Count >0 ){
@@ -37,6 +38,16 @@ public class GridManager : MonoBehaviour
         lineRenderer.SetPosition(lineRenderer.positionCount -1, mousePosition);
 
      }
+   }
+   public void  LoadLevel(int levelIndex){
+    if(levelIndex<0 || levelIndex >= levelList.levels.Length){
+        return;
+    }
+     levelData = levelList.levels[levelIndex];
+     ApplyLevelData();
+   }
+   private void ApplyLevelData(){
+     CreateGrid();
    }
     private void CreateGrid(){
      RectTransform gridRectTransform = GetComponent<RectTransform>();
@@ -91,23 +102,19 @@ public class GridManager : MonoBehaviour
             return deltaX <=1 && deltaY <=1 && !(deltaX==1 && deltaY ==1);
     }
     public void OnDotSelected(Dot dot){
-        if (selectedDots.Contains(dot)) {
-        if (selectedDots[selectedDots.Count - 1] == dot) {
-            selectedDots.Remove(dot);
-            UpdateLineRenderer();
-        } 
-        else {
-            int index = selectedDots.IndexOf(dot);
-            selectedDots.RemoveRange(index + 1, selectedDots.Count - index - 1);
-            UpdateLineRenderer();
-        }
-    } 
-    else {
-        if (CheckingColour(dot) && CheckingNearby(dot)) {
-            selectedDots.Add(dot);
-            UpdateLineRenderer();
+        if(!selectedDots.Contains(dot)){
+            if(CheckingColour(dot) && CheckingNearby(dot))
+            {
+                selectedDots.Add(dot);
+                 UpdateLineRenderer();
+            }  
         }
     }
+    public void OnDotExit(Dot dot){
+        if(selectedDots.Count >1 && selectedDots[selectedDots.Count -2] == dot){
+         selectedDots.RemoveAt(selectedDots.Count-1);
+         UpdateLineRenderer();
+        }
     }
     public void OnSelectionStart(Dot startDot){
         selectedDots.Clear();
@@ -127,21 +134,23 @@ public class GridManager : MonoBehaviour
         }
         FillEmptySpace();      
     }
-    private void UpdateLineRenderer(){
+    public void UpdateLineRenderer(){
         lineRenderer.positionCount = selectedDots.Count+1;
         for(int i =0;i<selectedDots.Count;i++){
             Vector3 dotPosition = selectedDots[i].transform.position;
-            dotPosition.z = 0;
+            dotPosition.z =0;
             lineRenderer.SetPosition(i,dotPosition);
             lineRenderer.startColor = selectedDots[0].color;
             lineRenderer.endColor = selectedDots[0].color;
+            lineRenderer.numCapVertices = 2; 
+            lineRenderer.numCornerVertices = 5;
         }
         if(selectedDots.Count >0){
           Vector3 lastDotPosition = selectedDots[selectedDots.Count-1].transform.position;
-          lastDotPosition.z = 0;
+          lastDotPosition.z =0;
           lineRenderer.SetPosition(selectedDots.Count,lastDotPosition);
         } 
-    }
+}
     private void FillEmptySpace(){
     RectTransform dotRect = dotPrefab.GetComponent<RectTransform>();
 

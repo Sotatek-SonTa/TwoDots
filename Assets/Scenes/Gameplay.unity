@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 98026071}
   - component: {fileID: 98026070}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -607,7 +607,8 @@ MonoBehaviour:
   dotPrefab: {fileID: 2108014062833959262, guid: a8723e4cbe9e5f04287b397e7fa83bb1, type: 3}
   selectedDots: []
   lineRenderer: {fileID: 0}
-  levelData: {fileID: 11400000, guid: a85d7b01b172a7e4c9aa6650df44c1ca, type: 2}
+  levelList: {fileID: 11400000, guid: 3075706c2cce9a3439f07941ecd9ca4d, type: 2}
+  levelData: {fileID: 0}
   fallDuration: 0.5
 --- !u!1 &2128667458
 GameObject:

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-public class Dot : MonoBehaviour,IPointerEnterHandler,IPointerUpHandler,IPointerDownHandler
+public class Dot : MonoBehaviour,IPointerEnterHandler,IPointerUpHandler,IPointerDownHandler,IPointerExitHandler
 {
    public Color color;
    public DotType dotType;
@@ -14,10 +14,19 @@ public class Dot : MonoBehaviour,IPointerEnterHandler,IPointerUpHandler,IPointer
     gridManager.OnSelectionStart(this);  
    }
    public void  OnPointerEnter(PointerEventData eventData){
-            gridManager.OnDotSelected(this);
+    if(gridManager.selectedDots.Count >1 && gridManager.selectedDots[gridManager.selectedDots.Count -2]==this)  
+    {
+      gridManager.selectedDots.RemoveAt(gridManager.selectedDots.Count-1);
+      gridManager.UpdateLineRenderer();
+    }else{
+        gridManager.OnDotSelected(this);
+    }
    }
    public void OnPointerUp(PointerEventData eventData){
          gridManager.OnSelectionEnd();
+   }
+   public void OnPointerExit(PointerEventData eventData){
+       // gridManager.OnDotExit(this);
    }
    private void Start() {
 

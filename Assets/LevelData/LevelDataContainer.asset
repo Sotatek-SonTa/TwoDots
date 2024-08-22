@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37251a7660a15e1438d8b3ae531c8640, type: 3}
-  m_Name: Level1
+  m_Script: {fileID: 11500000, guid: 37e19e02d7c4f6642bee4361f85a1153, type: 3}
+  m_Name: LevelDataContainer
   m_EditorClassIdentifier: 
-  level: 1
-  spawnableDotTypes: 000000000100000002000000
-  numberOfMoves: 25
-  dotTypeRequirements: []
+  levels:
+  - {fileID: 11400000, guid: a85d7b01b172a7e4c9aa6650df44c1ca, type: 2}
