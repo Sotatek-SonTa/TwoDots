@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,11 +12,19 @@ public class GridManager : MonoBehaviour
 
    [SerializeField] public GameObject dotPrefab;
    [SerializeField] public GameObject[,] dotMatrix;
+
+   [SerializeField] public GameObject WinUI;
+   [SerializeField] public GameObject LooseUI;
+
     [SerializeField] public List<Dot> selectedDots = new List<Dot>();
+
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private LevelList levelList;
-    [SerializeField] private LevelData levelData;
+    [SerializeField] public LevelData levelData;
+    [SerializeField] public Requirementbar requirementBar;
     [SerializeField] private float fallDuration = 0.5f;
+    [SerializeField] public int movesLeft;
+    [SerializeField] public int levelIndex;
     
     private void Start() {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -28,8 +35,9 @@ public class GridManager : MonoBehaviour
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
+        levelIndex = 0;
         dotMatrix = new GameObject[rows,columns];
-        LoadLevel(0);
+        LoadLevel(levelIndex);
    }
    private void Update() {
      if(selectedDots.Count >0 ){
@@ -44,10 +52,20 @@ public class GridManager : MonoBehaviour
         return;
     }
      levelData = levelList.levels[levelIndex];
+     rows = levelList.levels[levelIndex].rows;
+     columns = levelList.levels[levelIndex].columns;
      ApplyLevelData();
+     requirementBar.SetRequirement(levelData);
+     movesLeft = levelData.numberOfMoves;
    }
    private void ApplyLevelData(){
      CreateGrid();
+   }
+   private void OnMoveDone(){
+    if(movesLeft >0){
+        movesLeft--;
+        requirementBar.UpdateMoveLeft(movesLeft);
+    }
    }
     private void CreateGrid(){
      RectTransform gridRectTransform = GetComponent<RectTransform>();
@@ -82,6 +100,7 @@ public class GridManager : MonoBehaviour
                 Dot dotComponent = newDot.GetComponent<Dot>();
                 dotComponent.row = row;
                 dotComponent.column = column;
+               // dotComponent.dotType
                 AssignDotColor(dotComponent);
     }
     private bool CheckingColour(Dot dot){
@@ -123,16 +142,45 @@ public class GridManager : MonoBehaviour
     public void OnSelectionEnd(){
         if(selectedDots.Count>=2){
             HandleSelectedDots();
+            OnMoveDone();
         }
         selectedDots.Clear();
         lineRenderer.positionCount = 0;
+        if(movesLeft==0 && !requirementBar.trackingCondition){
+            LooseUI.SetActive(true);
+        }
+        if(requirementBar.trackingCondition){
+            WinUI.SetActive(true);
+        }
+    }
+    public void OnWinClick(){
+         ClearAllDotMatrix();
+        levelIndex++;
+        WinUI.SetActive(false);
+        LoadLevel(levelIndex);
+        selectedDots.Clear();
+    }
+    public void OnLooseClick(){
+        ClearAllDotMatrix();
+        LooseUI.SetActive(false);
+        LoadLevel(levelIndex);
+        selectedDots.Clear();
+    }
+    public void ClearAllDotMatrix(){
+        for(int i =0;i<rows;i++){
+            for(int j=0;j<columns;j++){
+                 Destroy(dotMatrix[i,j]);
+                dotMatrix[i,j]=null;
+            }
+        }
     }
     private void HandleSelectedDots(){
+        requirementBar.UpdateCollectedDots(selectedDots[0].dotType,selectedDots.Count);
         foreach(var dot in selectedDots){
-            dotMatrix[dot.row,dot.column] = null;
-            Destroy(dot.gameObject);
+        dotMatrix[dot.row,dot.column] = null;
+        Destroy(dot.gameObject);
         }
-        FillEmptySpace();      
+        FillEmptySpace();   
     }
     public void UpdateLineRenderer(){
         lineRenderer.positionCount = selectedDots.Count+1;
@@ -210,6 +258,7 @@ public class GridManager : MonoBehaviour
     DotType randomDotType = levelData.spawnableDotTypes[Random.Range(0,levelData.spawnableDotTypes.Length)];
     Debug.Log(randomDotType);
     dot.color = DotTypeColor(randomDotType);
+    dot.dotType =randomDotType;
     dot.GetComponent<Image>().color = dot.color;
   }
   private Color DotTypeColor(DotType dotType){
@@ -219,6 +268,10 @@ public class GridManager : MonoBehaviour
             case DotType.Green: return Color.green;
             case DotType.Blue: return Color.blue;
             case DotType.Yellow: return Color.yellow;
+            case DotType.Gray: return Color.gray;
+            case DotType.Pink: return new Color(1f,0.1f,1f);
+            case DotType.Orange: return new Color(1f,0.5f,0f);
+            case DotType.PerrasinGreen: return new Color(0f,0.6f,0.6f);
             default: return Color.white;
         }
     }

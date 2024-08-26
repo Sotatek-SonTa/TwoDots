@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37251a7660a15e1438d8b3ae531c8640, type: 3}
-  m_Name: Level1
+  m_Name: Level11
   m_EditorClassIdentifier: 
-  level: 1
-  rows: 3
-  columns: 3
-  spawnableDotTypes: 000000000100000005000000
-  numberOfMoves: 10
+  level: 11
+  rows: 7
+  columns: 5
+  spawnableDotTypes: 03000000040000000100000006000000
+  numberOfMoves: 25
   dotTypeRequirements:
-  - dotType: 0
-    quantity: 5
+  - dotType: 6
+    quantity: 20
+  - dotType: 3
+    quantity: 10

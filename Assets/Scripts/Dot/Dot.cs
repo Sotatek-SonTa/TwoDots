@@ -52,10 +52,23 @@ public class Dot : MonoBehaviour,IPointerEnterHandler,IPointerUpHandler,IPointer
             return Color.blue;
         case DotType.Yellow:
             return Color.yellow;
+        case DotType.Gray:
+             return Color.gray;
+        case DotType.Pink:
+            return new Color(1f,0.1f,1f);
+        case DotType.Orange:
+            return new Color(1f,0.5f,0f);
+        case DotType.PerrasinGreen:
+             return new Color(0f,0.6f,0.6f);
         default:
             return Color.white; // Default case, if needed
     }
  }
+ public DotType GetDotType()
+{
+    return dotType;
+}
+
 }
 
    public enum DotType{
@@ -63,4 +76,8 @@ public class Dot : MonoBehaviour,IPointerEnterHandler,IPointerUpHandler,IPointer
     Green,
     Blue,
     Yellow,
+    Gray,
+    Pink,
+    Orange,
+    PerrasinGreen,
    }
