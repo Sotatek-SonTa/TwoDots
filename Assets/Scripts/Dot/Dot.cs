@@ -80,4 +80,6 @@ public class Dot : MonoBehaviour,IPointerEnterHandler,IPointerUpHandler,IPointer
     Pink,
     Orange,
     PerrasinGreen,
+    DiscoBallBlue,
+    Chatreuse,
    }

@@ -15,14 +15,15 @@ MonoBehaviour:
   level: 17
   rows: 8
   columns: 8
-  spawnableDotTypes: 060000000000000002000000050000000300000007000000
+  spawnableDotTypes: 0600000000000000020000000300000007000000
   numberOfMoves: 40
   dotTypeRequirements:
   - dotType: 3
-    quantity: 30
+    quantity: 15
   - dotType: 2
-    quantity: 30
+    quantity: 15
   - dotType: 6
-    quantity: 30
+    quantity: 15
   - dotType: 7
-    quantity: 30
+    quantity: 15
+  blockedCell: []

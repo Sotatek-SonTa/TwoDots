@@ -46,6 +46,12 @@ public class DotItem : MonoBehaviour
             return Color.blue;
         case DotType.Yellow:
             return Color.yellow;
+        case DotType.Gray: return Color.gray;
+        case DotType.Pink: return new Color(1f,0.1f,1f);
+        case DotType.Orange: return new Color(1f,0.5f,0f);
+        case DotType.PerrasinGreen: return new Color(0f,0.6f,0.6f);
+        case DotType.DiscoBallBlue: return new Color(0.1f,0.85f,1f);
+        case DotType.Chatreuse: return new Color(0.5f,1f,0f);
         default:
             return Color.white; // Default case, if needed
     }

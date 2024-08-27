@@ -20,3 +20,4 @@ MonoBehaviour:
   dotTypeRequirements:
   - dotType: 0
     quantity: 5
+  blockedCells: []

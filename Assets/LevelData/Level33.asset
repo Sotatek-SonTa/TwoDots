@@ -10,20 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37251a7660a15e1438d8b3ae531c8640, type: 3}
-  m_Name: Level10
+  m_Name: Level33
   m_EditorClassIdentifier: 
-  level: 10
-  rows: 5
-  columns: 4
-  spawnableDotTypes: 0100000000000000030000000400000005000000
+  level: 33
+  rows: 6
+  columns: 6
+  spawnableDotTypes: 03000000060000000000000004000000
   numberOfMoves: 30
   dotTypeRequirements:
-  - dotType: 3
+  - dotType: 4
+    quantity: 15
+  - dotType: 6
     quantity: 10
   - dotType: 0
-    quantity: 5
-  - dotType: 4
-    quantity: 5
-  - dotType: 5
-    quantity: 10
-  blockedCell: []
+    quantity: 20
+  blockedCells:
+  - {x: 4, y: 0}
+  - {x: 4, y: 1}
+  - {x: 4, y: 2}
+  - {x: 1, y: 5}
+  - {x: 1, y: 4}
+  - {x: 1, y: 3}

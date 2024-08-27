@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Level11
   m_EditorClassIdentifier: 
   level: 11
-  rows: 7
-  columns: 5
+  rows: 5
+  columns: 6
   spawnableDotTypes: 03000000040000000100000006000000
   numberOfMoves: 25
   dotTypeRequirements:

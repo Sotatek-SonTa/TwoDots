@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 
@@ -12,6 +11,8 @@ public class Requirementbar : MonoBehaviour
     public RectTransform requiremnetHolder;
     public TextMeshProUGUI moves;
     public TextMeshProUGUI movesLeft;
+
+    public TextMeshProUGUI level;
     [SerializeField]public  List<DotItem> dotItmes = new();
      private Dictionary<DotType, DotItem> collectedDots = new Dictionary<DotType, DotItem>();
      public bool trackingCondition;
@@ -33,6 +34,8 @@ public class Requirementbar : MonoBehaviour
         }
         moves.text = "Moves";
         movesLeft.text = $"{levelData.numberOfMoves}";
+        level.text = $"Level {levelData.level}";
+    
     }
     public void UpdateMoveLeft(int moveLeft){
           movesLeft.text = $"{moveLeft}";

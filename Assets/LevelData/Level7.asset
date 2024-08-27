@@ -19,6 +19,7 @@ MonoBehaviour:
   numberOfMoves: 25
   dotTypeRequirements:
   - dotType: 0
-    quantity: 15
+    quantity: 10
   - dotType: 1
-    quantity: 20
+    quantity: 10
+  blockedCell: []

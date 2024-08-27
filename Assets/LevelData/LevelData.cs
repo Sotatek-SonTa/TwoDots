@@ -12,6 +12,7 @@ public class LevelData : ScriptableObject
     public DotType[] spawnableDotTypes;
     public int numberOfMoves;
     public DotTypeRequirement[] dotTypeRequirements;
+    public Vector2Int[] blockedCells;
 }
 [Serializable]
 public class DotTypeRequirement

@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class GridManager : MonoBehaviour
 {
-   [SerializeField]public int columns = 6;
-   [SerializeField]public int rows = 6;
+   [SerializeField]public int columns;
+   [SerializeField]public int rows;
    [SerializeField]public float titleSpacing=10f;
 
    [SerializeField] public GameObject dotPrefab;
@@ -54,6 +54,7 @@ public class GridManager : MonoBehaviour
      levelData = levelList.levels[levelIndex];
      rows = levelList.levels[levelIndex].rows;
      columns = levelList.levels[levelIndex].columns;
+     dotMatrix = new GameObject[rows,columns]; 
      ApplyLevelData();
      requirementBar.SetRequirement(levelData);
      movesLeft = levelData.numberOfMoves;
@@ -86,7 +87,12 @@ public class GridManager : MonoBehaviour
     Vector2 startPos = new Vector2(-gridWidth / 2 + dotRect.sizeDelta.x / 2, gridHeight / 2 - dotRect.sizeDelta.y / 2);
         for(int i =0;i<rows;i++){
             for(int j=0;j<columns;j++){
-                SpawnDot(i,j,startPos);
+                if(!IsBlockedCell(i,j)){
+                     SpawnDot(i,j,startPos);
+                }else{
+                    CreateBlockedCell(i,j,startPos);
+                }
+               
             }
         }
     }
@@ -154,15 +160,33 @@ public class GridManager : MonoBehaviour
         }
     }
     public void OnWinClick(){
-         ClearAllDotMatrix();
+        ClearBlockedCells();
+        ClearAllDotMatrix();
         levelIndex++;
         WinUI.SetActive(false);
         LoadLevel(levelIndex);
         selectedDots.Clear();
     }
     public void OnLooseClick(){
+        ClearBlockedCells();
         ClearAllDotMatrix();
         LooseUI.SetActive(false);
+        LoadLevel(levelIndex);
+        selectedDots.Clear();
+    }
+    public void OnClickNext(){
+        ClearBlockedCells();
+        ClearAllDotMatrix();
+        levelIndex++;
+        WinUI.SetActive(false);
+        LoadLevel(levelIndex);
+        selectedDots.Clear();
+    }
+    public void OnClickPrevious(){
+          ClearBlockedCells();
+        ClearAllDotMatrix();
+        levelIndex--;
+        WinUI.SetActive(false);
         LoadLevel(levelIndex);
         selectedDots.Clear();
     }
@@ -208,9 +232,9 @@ public class GridManager : MonoBehaviour
 
     for (int column = 0; column < columns; column++) {
         for (int row = rows - 1; row >= 0; row--) {
-            if (dotMatrix[row, column] == null) {
+            if (dotMatrix[row, column] == null && !IsBlockedCell(row, column)) {
                 for (int aboveRow = row - 1; aboveRow >= 0; aboveRow--) {
-                    if (dotMatrix[aboveRow, column] != null) {
+                    if (dotMatrix[aboveRow, column] != null && !IsBlockedCell(aboveRow, column)) {
                         dotMatrix[row, column] = dotMatrix[aboveRow, column];
                         dotMatrix[aboveRow, column] = null;
 
@@ -230,7 +254,7 @@ public class GridManager : MonoBehaviour
             }
         }
         for (int row = 0; row < rows; row++) {
-            if (dotMatrix[row, column] == null) {
+            if (dotMatrix[row, column] == null &&!IsBlockedCell(row, column)) {
                 Vector2 newPosition = new Vector2(
                     startPos.x + column * (dotRect.sizeDelta.x + titleSpacing),
                     startPos.y - row * (dotRect.sizeDelta.y + titleSpacing)
@@ -239,10 +263,8 @@ public class GridManager : MonoBehaviour
                 GameObject newDot = Instantiate(dotPrefab, transform);
                 RectTransform dotRectTransform = newDot.GetComponent<RectTransform>();
 
-                // Set the initial position (off-screen or above the grid)
                 dotRectTransform.anchoredPosition = new Vector2(newPosition.x, startPos.y + (dotRect.sizeDelta.y + titleSpacing) * rows);
 
-                // Animate the dot to its target position
                 dotRectTransform.DOAnchorPos(newPosition, 0.5f).SetEase(Ease.OutBounce);
 
                 dotMatrix[row, column] = newDot;
@@ -254,6 +276,57 @@ public class GridManager : MonoBehaviour
         }
     }
   }
+  private bool IsBlockedCell(int row, int column)
+{
+    foreach (var blockedCell in levelData.blockedCells)
+    {
+        if (blockedCell.x == row && blockedCell.y == column)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+private void CreateBlockedCell(int row, int column, Vector2 startPos)
+{
+    GameObject newBlock = new GameObject("BlockedCell");
+    newBlock.transform.SetParent(transform,false);
+    RectTransform rectTransform = newBlock.AddComponent<RectTransform>();
+    rectTransform.sizeDelta = dotPrefab.GetComponent<RectTransform>().sizeDelta;
+    rectTransform.anchoredPosition = new Vector2(startPos.x + column * (rectTransform.sizeDelta.x + titleSpacing),
+                                                 startPos.y - row * (rectTransform.sizeDelta.y + titleSpacing));
+
+    Image blockImage = newBlock.AddComponent<Image>();
+    blockImage.color = Color.white; // Set the image color to white
+}
+public void ClearBlockedCells(){
+    foreach(var blockedCell in levelData.blockedCells){
+        int row = blockedCell.x;
+        int column = blockedCell.y;
+    foreach (Transform child in transform)
+    {
+    if(child.name =="BlockedCell"){ 
+    RectTransform dotRect = dotPrefab.GetComponent<RectTransform>();
+    float gridWidth = columns * (dotRect.sizeDelta.x + titleSpacing) - titleSpacing;
+    float gridHeight = rows * (dotRect.sizeDelta.y + titleSpacing) - titleSpacing;
+    Vector2 startPos = new Vector2(-gridWidth / 2 + dotRect.sizeDelta.x / 2, gridHeight / 2 - dotRect.sizeDelta.y / 2);
+
+            RectTransform rectTransform = child.GetComponent<RectTransform>();
+                Vector2 position = new Vector2(
+                    startPos.x + column * (rectTransform.sizeDelta.x + titleSpacing),
+                    startPos.y - row * (rectTransform.sizeDelta.y + titleSpacing)
+                );
+
+                if (rectTransform.anchoredPosition == position)
+                {
+                    Destroy(child.gameObject);
+                    break;
+                }
+        }
+     }
+    }
+}
   private void AssignDotColor(Dot dot){
     DotType randomDotType = levelData.spawnableDotTypes[Random.Range(0,levelData.spawnableDotTypes.Length)];
     Debug.Log(randomDotType);
@@ -272,6 +345,8 @@ public class GridManager : MonoBehaviour
             case DotType.Pink: return new Color(1f,0.1f,1f);
             case DotType.Orange: return new Color(1f,0.5f,0f);
             case DotType.PerrasinGreen: return new Color(0f,0.6f,0.6f);
+            case DotType.DiscoBallBlue: return new Color(0.1f,0.85f,1f);
+            case DotType.Chatreuse: return new Color(0.5f,1f,0f);
             default: return Color.white;
         }
     }

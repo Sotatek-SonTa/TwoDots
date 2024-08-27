@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: Level14
   m_EditorClassIdentifier: 
   level: 14
-  rows: 7
-  columns: 7
+  rows: 6
+  columns: 4
   spawnableDotTypes: 0400000007000000000000000500000002000000
   numberOfMoves: 35
   dotTypeRequirements:
   - dotType: 0
-    quantity: 30
+    quantity: 10
   - dotType: 2
-    quantity: 30
+    quantity: 10
   - dotType: 7
-    quantity: 30
+    quantity: 10
+  blockedCell: []
