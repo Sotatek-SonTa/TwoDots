@@ -82,4 +82,10 @@ public class Dot : MonoBehaviour,IPointerEnterHandler,IPointerUpHandler,IPointer
     PerrasinGreen,
     DiscoBallBlue,
     Chatreuse,
+    Indigo,
+    Raspberry,
+    PhtaloBlue,
+    CersizePink,
+    DarkMagneta,
+    Brown,
    }

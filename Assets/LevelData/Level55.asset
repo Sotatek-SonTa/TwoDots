@@ -10,28 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37251a7660a15e1438d8b3ae531c8640, type: 3}
-  m_Name: Level37
+  m_Name: Level55
   m_EditorClassIdentifier: 
-  level: 37
+  level: 55
   rows: 7
   columns: 7
-  spawnableDotTypes: 0000000007000000060000000400000000000000
-  numberOfMoves: 35
+  spawnableDotTypes: 080000000900000006000000000000000b0000000f000000
+  numberOfMoves: 40
   dotTypeRequirements:
-  - dotType: 4
-    quantity: 15
-  - dotType: 6
-    quantity: 10
-  - dotType: 7
-    quantity: 15
   - dotType: 0
     quantity: 15
+  - dotType: 9
+    quantity: 10
+  - dotType: 8
+    quantity: 15
+  - dotType: 15
+    quantity: 10
+  - dotType: 6
+    quantity: 10
   blockedCells:
-  - {x: 0, y: 0}
-  - {x: 1, y: 0}
-  - {x: 0, y: 6}
-  - {x: 1, y: 6}
-  - {x: 6, y: 6}
-  - {x: 5, y: 6}
-  - {x: 5, y: 0}
-  - {x: 6, y: 0}
+  - {x: 2, y: 2}
+  - {x: 3, y: 2}
+  - {x: 4, y: 2}
+  - {x: 4, y: 3}
+  - {x: 4, y: 4}
+  - {x: 3, y: 4}
+  - {x: 2, y: 4}
+  - {x: 2, y: 4}
+  - {x: 2, y: 1}
+  - {x: 2, y: 5}
