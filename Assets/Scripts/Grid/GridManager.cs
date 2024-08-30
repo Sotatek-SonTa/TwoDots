@@ -127,13 +127,11 @@ public class GridManager : MonoBehaviour
             return deltaX <=1 && deltaY <=1 && !(deltaX==1 && deltaY ==1);
     }
     public void OnDotSelected(Dot dot){
-        if(!selectedDots.Contains(dot)){
             if(CheckingColour(dot) && CheckingNearby(dot))
             {
                 selectedDots.Add(dot);
                  UpdateLineRenderer();
             }  
-        }
     }
     public void OnDotExit(Dot dot){
         if(selectedDots.Count >1 && selectedDots[selectedDots.Count -2] == dot){
@@ -147,7 +145,11 @@ public class GridManager : MonoBehaviour
     }
     public void OnSelectionEnd(){
         if(selectedDots.Count>=2){
-            HandleSelectedDots();
+            if(IsClosedLoop()){
+                ClearAllDotsOfColor(selectedDots[0].dotType);
+            }else{
+               HandleSelectedDots();
+            }
             OnMoveDone();
         }
         selectedDots.Clear();
@@ -201,6 +203,14 @@ public class GridManager : MonoBehaviour
     private void HandleSelectedDots(){
         requirementBar.UpdateCollectedDots(selectedDots[0].dotType,selectedDots.Count);
         foreach(var dot in selectedDots){
+        dotMatrix[dot.row,dot.column] = null;
+        Destroy(dot.gameObject);
+        }
+        FillEmptySpace();   
+    }
+    private void HandeldLoopSelectedDot(){
+        requirementBar.UpdateCollectedDots(selectedDots[0].dotType,selectedDots.Count-1);
+         foreach(var dot in selectedDots){
         dotMatrix[dot.row,dot.column] = null;
         Destroy(dot.gameObject);
         }
@@ -327,6 +337,30 @@ public void ClearBlockedCells(){
      }
     }
 }
+ private bool IsClosedLoop()
+{
+    Dot lastDot = selectedDots[selectedDots.Count - 1];
+    // Check if lastDot is the same as the first or any earlier dot
+    return selectedDots.IndexOf(lastDot) != selectedDots.Count - 1 && selectedDots.Count >= 4;
+}
+private void ClearAllDotsOfColor(DotType dotType)
+{
+    for (int row = 0; row < rows; row++)
+    {
+        for (int column = 0; column < columns; column++)
+        {
+            Dot dot = dotMatrix[row, column]?.GetComponent<Dot>();
+            if (dot != null && dot.dotType == dotType)
+            {
+                if (!selectedDots.Contains(dot))
+                {
+                    selectedDots.Add(dot); 
+                }
+            }
+        }
+    }
+    HandeldLoopSelectedDot();
+}
   private void AssignDotColor(Dot dot){
     DotType randomDotType = levelData.spawnableDotTypes[Random.Range(0,levelData.spawnableDotTypes.Length)];
     Debug.Log(randomDotType);
@@ -353,6 +387,11 @@ public void ClearBlockedCells(){
             case DotType.CersizePink: return new Color(1f,0.2f,0.47f);
             case DotType.DarkMagneta: return new Color(0.5f,0f,0.6f);
             case DotType.Brown: return  new Color(0.6f,0.2f,0f);
+            case DotType.TyrianPurple: return new Color(0.5f,0f,0.25f);
+        case DotType.OxfordBlue: return new Color(0f,0.1f,0.2f);
+        case DotType.CherryBlossomPink: return new Color(1f,0.7f,0.8f);
+        case DotType.Chocolate: return new Color(0.5f,0.33f,0f);
+        case DotType.BabyBlueEyes: return new Color(0.6f,0.67f,1f);
             default: return Color.white;
         }
     }

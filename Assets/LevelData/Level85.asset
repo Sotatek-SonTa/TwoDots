@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37251a7660a15e1438d8b3ae531c8640, type: 3}
+  m_Name: Level85
+  m_EditorClassIdentifier: 
+  level: 85
+  rows: 6
+  columns: 6
+  spawnableDotTypes: 000000000a0000000d000000040000000e000000
+  numberOfMoves: 45
+  dotTypeRequirements:
+  - dotType: 10
+    quantity: 20
+  - dotType: 13
+    quantity: 20
+  blockedCells:
+  - {x: 4, y: 1}
+  - {x: 4, y: 2}
+  - {x: 4, y: 3}
+  - {x: 4, y: 4}
+  - {x: 4, y: 5}
+  - {x: 5, y: 1}

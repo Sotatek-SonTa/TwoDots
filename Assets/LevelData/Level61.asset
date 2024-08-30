@@ -22,4 +22,18 @@ MonoBehaviour:
     quantity: 20
   - dotType: 12
     quantity: 20
-  blockedCells: []
+  blockedCells:
+  - {x: 2, y: 2}
+  - {x: 2, y: 3}
+  - {x: 2, y: 4}
+  - {x: 2, y: 5}
+  - {x: 3, y: 5}
+  - {x: 4, y: 4}
+  - {x: 5, y: 3}
+  - {x: 6, y: 2}
+  - {x: 6, y: 2}
+  - {x: 6, y: 2}
+  - {x: 7, y: 2}
+  - {x: 7, y: 3}
+  - {x: 7, y: 4}
+  - {x: 7, y: 5}

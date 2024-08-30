@@ -12,10 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37251a7660a15e1438d8b3ae531c8640, type: 3}
   m_Name: Level62
   m_EditorClassIdentifier: 
-  level: 0
-  rows: 0
-  columns: 0
-  spawnableDotTypes: 
-  numberOfMoves: 0
-  dotTypeRequirements: []
-  blockedCells: []
+  level: 62
+  rows: 7
+  columns: 7
+  spawnableDotTypes: 0000000005000000060000000800000009000000
+  numberOfMoves: 45
+  dotTypeRequirements:
+  - dotType: 5
+    quantity: 25
+  - dotType: 8
+    quantity: 20
+  - dotType: 0
+    quantity: 10
+  blockedCells:
+  - {x: 1, y: 2}
+  - {x: 1, y: 3}
+  - {x: 1, y: 4}
+  - {x: 3, y: 2}
+  - {x: 3, y: 3}
+  - {x: 3, y: 4}
+  - {x: 5, y: 2}
+  - {x: 5, y: 3}
+  - {x: 5, y: 4}

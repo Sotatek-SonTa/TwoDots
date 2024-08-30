@@ -88,4 +88,9 @@ public class Dot : MonoBehaviour,IPointerEnterHandler,IPointerUpHandler,IPointer
     CersizePink,
     DarkMagneta,
     Brown,
+    TyrianPurple,
+    OxfordBlue,
+    CherryBlossomPink,
+    Chocolate,
+    BabyBlueEyes,
    }

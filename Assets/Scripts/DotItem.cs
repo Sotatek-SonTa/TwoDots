@@ -58,6 +58,11 @@ public class DotItem : MonoBehaviour
         case DotType.CersizePink: return new Color(1f,0.2f,0.47f);
         case DotType.DarkMagneta: return new Color(0.5f,0f,0.6f);
         case DotType.Brown: return  new Color(0.6f,0.2f,0f);
+        case DotType.TyrianPurple: return new Color(0.5f,0f,0.25f);
+        case DotType.OxfordBlue: return new Color(0f,0.1f,0.2f);
+        case DotType.CherryBlossomPink: return new Color(1f,0.7f,0.8f);
+        case DotType.Chocolate: return new Color(0.5f,0.33f,0f);
+        case DotType.BabyBlueEyes: return new Color(0.6f,0.67f,1f);
         default:
             return Color.white; // Default case, if needed
     }
