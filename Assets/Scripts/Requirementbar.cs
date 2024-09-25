@@ -34,7 +34,7 @@ public class Requirementbar : MonoBehaviour
         }
         moves.text = "Moves";
         movesLeft.text = $"{levelData.numberOfMoves}";
-        level.text = $"Level {levelData.level}";
+        level.text = $"{levelData.level}";
     
     }
     public void UpdateMoveLeft(int moveLeft){
@@ -42,7 +42,8 @@ public class Requirementbar : MonoBehaviour
           trackingCondition= dotItmes.All(condition =>condition.trackingCondition);
     }
     public void DeleteLevelRequierment(){
-        for(int i =0;i<dotItmes.Count;i++){
+        trackingCondition = false;
+        for (int i =0;i<dotItmes.Count;i++){
             Destroy(dotItmes[i].gameObject);
         }
     }

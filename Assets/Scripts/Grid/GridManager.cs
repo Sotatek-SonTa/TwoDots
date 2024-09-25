@@ -1,14 +1,15 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.U2D;
 
 public class GridManager : MonoBehaviour
 {
    [SerializeField]public int columns;
    [SerializeField]public int rows;
-   [SerializeField]public float titleSpacing=10f;
+   [SerializeField]public float titleSpacing=1f;
 
    [SerializeField] public GameObject dotPrefab;
    [SerializeField] public GameObject[,] dotMatrix;
@@ -22,12 +23,19 @@ public class GridManager : MonoBehaviour
     [SerializeField] private LevelList levelList;
     [SerializeField] public LevelData levelData;
     [SerializeField] public Requirementbar requirementBar;
+
+
+    [SerializeField] private SpriteAtlas dotSpriteAtlas;
+    [SerializeField] private Dictionary<DotType, string> dotTypeToSpriteNameMap;
+
     [SerializeField] private float fallDuration = 0.5f;
     [SerializeField] public int movesLeft;
     [SerializeField] public int levelIndex;
+
+    [SerializeField] public Sprite blockCell;
     
     private void Start() {
-        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        IntilalizeDotTypeToSpriteMap();
         lineRenderer.positionCount = 0;
         lineRenderer.startWidth = 0.1f;
         lineRenderer.endWidth = 0.1f;
@@ -60,6 +68,7 @@ public class GridManager : MonoBehaviour
      movesLeft = levelData.numberOfMoves;
    }
    private void ApplyLevelData(){
+     AdjustDotSize();
      CreateGrid();
    }
    private void OnMoveDone(){
@@ -72,7 +81,17 @@ public class GridManager : MonoBehaviour
      RectTransform gridRectTransform = GetComponent<RectTransform>();
     RectTransform dotRect = dotPrefab.GetComponent<RectTransform>();
 
+     Vector2 screenSize = new Vector2(Screen.width, Screen.height);
+        float maxGridWidth = screenSize.x * 0.7f;
+        float maxGridHeight = screenSize.y * 0.7f;
+
+        float dotWidth = maxGridWidth / columns - titleSpacing;
+        float dotHeigth = maxGridHeight / rows - titleSpacing;
+
+        float dotSize = Mathf.Min(dotWidth, dotHeigth);
+        dotRect.sizeDelta = new Vector2(dotSize, dotSize);
     
+
     float gridWidth = columns * (dotRect.sizeDelta.x + titleSpacing) - titleSpacing;
     float gridHeight = rows * (dotRect.sizeDelta.y + titleSpacing) - titleSpacing;
 
@@ -106,15 +125,14 @@ public class GridManager : MonoBehaviour
                 Dot dotComponent = newDot.GetComponent<Dot>();
                 dotComponent.row = row;
                 dotComponent.column = column;
-               // dotComponent.dotType
                 AssignDotColor(dotComponent);
     }
     private bool CheckingColour(Dot dot){
        if(selectedDots.Count ==0){
         return true;
        }
-        Color firstDotColor = selectedDots[0].color;
-        Color newDotColor = dot.color;
+        DotType firstDotColor = selectedDots[0].dotType;
+        DotType newDotColor = dot.dotType;
         return firstDotColor == newDotColor;
     }
     private bool CheckingNearby(Dot dot){
@@ -308,7 +326,7 @@ private void CreateBlockedCell(int row, int column, Vector2 startPos)
                                                  startPos.y - row * (rectTransform.sizeDelta.y + titleSpacing));
 
     Image blockImage = newBlock.AddComponent<Image>();
-    blockImage.color = Color.white; // Set the image color to white
+    blockImage.sprite = blockCell; // Set the image color to white
 }
 public void ClearBlockedCells(){
     foreach(var blockedCell in levelData.blockedCells){
@@ -363,36 +381,41 @@ private void ClearAllDotsOfColor(DotType dotType)
 }
   private void AssignDotColor(Dot dot){
     DotType randomDotType = levelData.spawnableDotTypes[Random.Range(0,levelData.spawnableDotTypes.Length)];
-    Debug.Log(randomDotType);
-    dot.color = DotTypeColor(randomDotType);
     dot.dotType =randomDotType;
-    dot.GetComponent<Image>().color = dot.color;
-  }
-  private Color DotTypeColor(DotType dotType){
-         switch (dotType)
+    string spriteName;
+    if(dotTypeToSpriteNameMap.TryGetValue(randomDotType, out spriteName))
         {
-            case DotType.Red: return Color.red;
-            case DotType.Green: return Color.green;
-            case DotType.Blue: return Color.blue;
-            case DotType.Yellow: return Color.yellow;
-            case DotType.Gray: return Color.gray;
-            case DotType.Pink: return new Color(1f,0.1f,1f);
-            case DotType.Orange: return new Color(1f,0.5f,0f);
-            case DotType.PerrasinGreen: return new Color(0f,0.6f,0.6f);
-            case DotType.DiscoBallBlue: return new Color(0.1f,0.85f,1f);
-            case DotType.Chatreuse: return new Color(0.5f,1f,0f);
-            case DotType.Indigo: return new Color(0f,0.27f,0.4f);
-            case DotType.Raspberry: return new Color(0.9f,0f,0.45f);
-            case DotType.PhtaloBlue: return new Color(0f,0.08f,0.5f);
-            case DotType.CersizePink: return new Color(1f,0.2f,0.47f);
-            case DotType.DarkMagneta: return new Color(0.5f,0f,0.6f);
-            case DotType.Brown: return  new Color(0.6f,0.2f,0f);
-            case DotType.TyrianPurple: return new Color(0.5f,0f,0.25f);
-        case DotType.OxfordBlue: return new Color(0f,0.1f,0.2f);
-        case DotType.CherryBlossomPink: return new Color(1f,0.7f,0.8f);
-        case DotType.Chocolate: return new Color(0.5f,0.33f,0f);
-        case DotType.BabyBlueEyes: return new Color(0.6f,0.67f,1f);
-            default: return Color.white;
+            Sprite dotSprite = dotSpriteAtlas.GetSprite(spriteName);
+            dot.GetComponent<Image>().sprite = dotSprite;
         }
+  }
+    private void AdjustDotSize()
+    {
+        RectTransform gridRectTransform = GetComponent<RectTransform>();
+        RectTransform dotRect = dotPrefab.GetComponent<RectTransform>();
+
+        
+        float gridWidth = gridRectTransform.rect.width;
+        float gridHeight = gridRectTransform.rect.height;
+
+       
+        float dotWidth = (gridWidth - (columns - 1) * titleSpacing) / columns;
+        float dotHeight = (gridHeight - (rows - 1) * titleSpacing) / rows;
+
+       
+        float newDotSize = Mathf.Min(dotWidth, dotHeight);
+
+       
+        dotRect.sizeDelta = new Vector2(newDotSize, newDotSize);
+    }
+    private void IntilalizeDotTypeToSpriteMap()
+    {
+        dotTypeToSpriteNameMap = new Dictionary<DotType, string>
+         {
+            {DotType.Red,"egg_1" },
+            {DotType.Blue,"egg_2" },
+            {DotType.Yellow,"egg_3" },
+            {DotType.Pink, "egg_4" },
+        };
     }
 }

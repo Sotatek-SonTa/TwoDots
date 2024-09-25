@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7026747777799441841}
   - component: {fileID: 924563671083298705}
   - component: {fileID: 3039976391003195093}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Dot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 199, y: 199}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1633519388351454649
 MonoBehaviour:
@@ -53,9 +53,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 0, g: 0, b: 0, a: 1}
+  dotType: 0
   row: 0
   column: 0
   gridManager: {fileID: 0}
+  spriteAtlas: {fileID: 100100200, guid: 92beb0974412c554d82cd53e04d0a3b4, type: 3}
 --- !u!222 &2461519464457121311
 CanvasRenderer:
   m_ObjectHideFlags: 0

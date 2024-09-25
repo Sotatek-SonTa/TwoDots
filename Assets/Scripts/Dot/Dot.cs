@@ -1,7 +1,8 @@
-
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.U2D;
 public class Dot : MonoBehaviour,IPointerEnterHandler,IPointerUpHandler,IPointerDownHandler,IPointerExitHandler
 {
    public Color color;
@@ -9,8 +10,11 @@ public class Dot : MonoBehaviour,IPointerEnterHandler,IPointerUpHandler,IPointer
    public int row;
    public int column;
    private Image spriteRenderer;
+
    [SerializeField] private GridManager gridManager;
-   public void OnPointerDown(PointerEventData eventData){
+   [SerializeField] private SpriteAtlas spriteAtlas;
+    private Dictionary<DotType, string> dotTypeToSpriteName;
+    public void OnPointerDown(PointerEventData eventData){
     gridManager.OnSelectionStart(this);  
    }
    public void  OnPointerEnter(PointerEventData eventData){
@@ -28,42 +32,35 @@ public class Dot : MonoBehaviour,IPointerEnterHandler,IPointerUpHandler,IPointer
    public void OnPointerExit(PointerEventData eventData){
        // gridManager.OnDotExit(this);
    }
-   private void Start() {
+    private void Awake()
+    {
+        dotTypeToSpriteName = new Dictionary<DotType, string>
+        {
+            {DotType.Red,"egg_1" },
+            {DotType.Green,"egg_2" },
+            {DotType.Yellow,"egg_3" },
+            {DotType.Pink, "egg_4" },
+        };
+    }
+    private void Start() {
 
     spriteRenderer = GetComponent<Image>();
     gridManager = FindAnyObjectByType<GridManager>();
-    //AssignRandomColor();
-   }
-   void AssignRandomColor(){
-    dotType = GetRandomDotType();
-    color = GetColorFromDotType(dotType);
-    spriteRenderer.color = color;
    }
    DotType GetRandomDotType(){
      return (DotType)Random.Range(0,System.Enum.GetValues(typeof(DotType)).Length);
    }
-   Color GetColorFromDotType(DotType type) {
-    switch (type) {
-        case DotType.Red:
-            return Color.red;
-        case DotType.Green:
-            return Color.green;
-        case DotType.Blue:
-            return Color.blue;
-        case DotType.Yellow:
-            return Color.yellow;
-        case DotType.Gray:
-             return Color.gray;
-        case DotType.Pink:
-            return new Color(1f,0.1f,1f);
-        case DotType.Orange:
-            return new Color(1f,0.5f,0f);
-        case DotType.PerrasinGreen:
-             return new Color(0f,0.6f,0.6f);
-        default:
-            return Color.white; // Default case, if needed
+    void AssignSpriteFromAtlas(DotType type)
+    {
+        if (dotTypeToSpriteName.ContainsKey(type))
+        {
+            Sprite dotSprite = spriteAtlas.GetSprite(dotTypeToSpriteName[type]);
+            if(dotSprite != null) 
+            {
+                spriteRenderer.sprite = dotSprite;
+            }
+        }
     }
- }
  public DotType GetDotType()
 {
     return dotType;

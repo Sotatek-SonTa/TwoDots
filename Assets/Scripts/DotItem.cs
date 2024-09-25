@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.U2D;
 
 public class DotItem : MonoBehaviour
 {
@@ -12,12 +13,13 @@ public class DotItem : MonoBehaviour
     public bool trackingCondition;
    [SerializeField] public int numberOfCollected;
    [SerializeField] public int requirementDots;
-    
+    public SpriteAtlas spriteAtlas;
     private DotType dotType;
     public void InitDot(DotType dot,int requirmentQuantity){
         moves.enabled = false;
-        image.color = GetDotColor(dot);
+        image.sprite = GetDotSprite(dot);
         text.text = $"0/{requirmentQuantity}";
+        dotType = dot;
         numberOfCollected = 0;
         requirementDots = requirmentQuantity;
         trackingCondition=false;
@@ -66,5 +68,16 @@ public class DotItem : MonoBehaviour
         default:
             return Color.white; // Default case, if needed
     }
+    }
+    public Sprite GetDotSprite(DotType dot)
+    {
+        switch (dot)
+        {
+            case DotType.Red: return spriteAtlas.GetSprite("egg_1");
+            case DotType.Green: return spriteAtlas.GetSprite("egg_2");
+            case DotType.Yellow: return spriteAtlas.GetSprite("egg_3");
+            case DotType.Pink: return spriteAtlas.GetSprite("egg_4");
+            default: return spriteAtlas.GetSprite("egg_1");
+        }
     }
 }
