@@ -2119,7 +2119,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2011736562}
         m_TargetAssemblyTypeName: GridManager, Assembly-CSharp
-        m_MethodName: OnClickNext
+        m_MethodName: OnWinClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2252,7 +2252,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2011736562}
         m_TargetAssemblyTypeName: GridManager, Assembly-CSharp
-        m_MethodName: OnClickNext
+        m_MethodName: OnWinClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3804,7 +3804,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2011736562}
         m_TargetAssemblyTypeName: GridManager, Assembly-CSharp
-        m_MethodName: OnClickPrevious
+        m_MethodName: OnLooseClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4965,12 +4965,12 @@ MonoBehaviour:
   selectedDots: []
   WinUI: {fileID: 780860070}
   LooseUI: {fileID: 140361768}
-  lineRenderer: {fileID: 175459300672615469, guid: 8cb12ecacc3a6e64b8bb6312ea9f9bcb, type: 3}
   requirementBar: {fileID: 2128667460}
   movesLeft: 0
   levelIndex: 0
   linePrefab: {fileID: 175459300672615469, guid: 8cb12ecacc3a6e64b8bb6312ea9f9bcb, type: 3}
   lineRenderers: []
+  currentLineRender: {fileID: 0}
   dotSpriteAtlas: {fileID: 100100200, guid: 92beb0974412c554d82cd53e04d0a3b4, type: 3}
   blockCell: {fileID: 21300000, guid: a9e1f3417f4f6614da72035e33c8536e, type: 3}
   fallDuration: 0.5

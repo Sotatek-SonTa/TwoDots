@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TwoDotsLevelData;
 
-[CreateAssetMenu(fileName ="LevelDataContainer",menuName ="ScriptableObject/LevelDataContainer")]
-public class LevelList : ScriptableObject
+namespace TwoDotsLevelList
 {
-  public LevelData[] levels;
+    [CreateAssetMenu(fileName = "LevelDataContainer", menuName = "ScriptableObject/LevelDataContainer")]
+    public class LevelList : ScriptableObject
+    {
+        public LevelData[] levels;
+    }
 }
+
+

@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TwoDotsLevelData;
+using TwoDotsLevelList;
 public class LevelManager : MonoBehaviour
 {
     public LevelData levelData;
