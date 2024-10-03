@@ -111,8 +111,8 @@ namespace TwoDotGridManager
             RectTransform dotRect = dotPrefab.GetComponent<RectTransform>();
 
             Vector2 screenSize = new Vector2(Screen.width, Screen.height);
-            float maxGridWidth = screenSize.x * 0.7f;
-            float maxGridHeight = screenSize.y * 0.7f;
+            float maxGridWidth = screenSize.x * 0.6f;
+            float maxGridHeight = screenSize.y * 0.6f;
 
             float dotWidth = maxGridWidth / columns - titleSpacing;
             float dotHeigth = maxGridHeight / rows - titleSpacing;
