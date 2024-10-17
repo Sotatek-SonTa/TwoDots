@@ -4972,7 +4972,7 @@ MonoBehaviour:
   lineRenderers: []
   currentLineRender: {fileID: 0}
   dotSpriteAtlas: {fileID: 100100200, guid: 92beb0974412c554d82cd53e04d0a3b4, type: 3}
-  blockCell: {fileID: 21300000, guid: a9e1f3417f4f6614da72035e33c8536e, type: 3}
+  blockCell: {fileID: 21300000, guid: d79f45be77336db41a6be181f18b1d36, type: 3}
   fallDuration: 0.5
   uiManager: {fileID: 1729495526}
   levelManager: {fileID: 469710223}
