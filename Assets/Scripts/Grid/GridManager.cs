@@ -55,6 +55,7 @@ namespace TwoDotGridManager
 
         private void Start()
         {
+            Input.multiTouchEnabled = false;
             IntilalizeDotTypeToSpriteMap();
             //linePrefab.positionCount = 2;
             linePrefab.startWidth = 0.1f;
