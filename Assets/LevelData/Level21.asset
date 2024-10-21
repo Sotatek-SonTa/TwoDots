@@ -22,3 +22,5 @@ MonoBehaviour:
     quantity: 5
   blockedCells:
   - {x: 1, y: 1}
+  maxGridHeight: 0.8
+  maxGridWidth: 0.8

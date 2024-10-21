@@ -15,6 +15,8 @@ namespace TwoDotsLevelData
         public int numberOfMoves;
         public DotTypeRequirement[] dotTypeRequirements;
         public Vector2Int[] blockedCells;
+        public float maxGridHeight;
+        public float maxGridWidth;
     }
     [Serializable]
     public class DotTypeRequirement

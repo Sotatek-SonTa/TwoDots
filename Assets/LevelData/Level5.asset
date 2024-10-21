@@ -24,3 +24,6 @@ MonoBehaviour:
     quantity: 5
   - dotType: 4
     quantity: 5
+  blockedCells: []
+  maxGridHeight: 1
+  maxGridWidth: 1

@@ -47,3 +47,5 @@ MonoBehaviour:
   - {x: 7, y: 5}
   - {x: 7, y: 4}
   - {x: 7, y: 3}
+  maxGridHeight: 1
+  maxGridWidth: 1

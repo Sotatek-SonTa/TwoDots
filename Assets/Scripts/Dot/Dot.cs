@@ -7,14 +7,14 @@ using TwoDotGridManager;
 
 namespace TwoDotsDot
 {
-    public class Dot : MonoBehaviour, IPointerEnterHandler, IPointerUpHandler, IPointerDownHandler, IPointerExitHandler
+    public class Dot : MonoBehaviour, IPointerEnterHandler, IPointerUpHandler, IPointerDownHandler
     {
         [Header("Attribute")]
         public Color color;
         public DotType dotType;
         public int row;
         public int column;
-        private Image spriteRenderer;
+        [SerializeField]private Image spriteRenderer;
 
         [Header("NeighboorDot")]
         public Dot up;
@@ -27,10 +27,14 @@ namespace TwoDotsDot
         private Dictionary<DotType, string> dotTypeToSpriteName;
         public void OnPointerDown(PointerEventData eventData)
         {
-            gridManager.OnSelectionStart(this);
+            if(!gridManager.isTouching){
+                 gridManager.OnSelectionStart(this);
+                 gridManager.isTouching = true;
+            }
         }
         public void OnPointerEnter(PointerEventData eventData)
         {
+            Debug.Log("Enter a dot");
             if (gridManager.selectedDots.Count >= 2)
             {
                 Dot lastSelected = gridManager.selectedDots[gridManager.selectedDots.Count - 1];
@@ -64,11 +68,11 @@ namespace TwoDotsDot
         }
         public void OnPointerUp(PointerEventData eventData)
         {
-            gridManager.OnSelectionEnd();
-        }
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            // gridManager.OnDotExit(this);
+                if(gridManager.isHandlindPointerUp) return;
+                gridManager.isHandlindPointerUp = true;
+                gridManager.isTouching = false;
+                gridManager.OnSelectionEnd();
+                Debug.Log("Hanlde dot");
         }
         private void Awake()
         {
@@ -108,25 +112,6 @@ namespace TwoDotsDot
         private void Update()
         {
             InitializeNeighbors();
-        }
-        DotType GetRandomDotType()
-        {
-            return (DotType)Random.Range(0, System.Enum.GetValues(typeof(DotType)).Length);
-        }
-        void AssignSpriteFromAtlas(DotType type)
-        {
-            if (dotTypeToSpriteName.ContainsKey(type))
-            {
-                Sprite dotSprite = spriteAtlas.GetSprite(dotTypeToSpriteName[type]);
-                if (dotSprite != null)
-                {
-                    spriteRenderer.sprite = dotSprite;
-                }
-            }
-        }
-        public DotType GetDotType()
-        {
-            return dotType;
         }
         private bool IsAdjacent(Dot lastDot)
         {

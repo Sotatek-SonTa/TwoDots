@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37251a7660a15e1438d8b3ae531c8640, type: 3}
   m_Name: Level100
   m_EditorClassIdentifier: 
-  level: 99
+  level: 100
   rows: 9
   columns: 9
   spawnableDotTypes: 000000000a000000080000000e0000000b00000012000000
@@ -47,3 +47,5 @@ MonoBehaviour:
   - {x: 3, y: 1}
   - {x: 5, y: 7}
   - {x: 5, y: 8}
+  maxGridHeight: 0.95
+  maxGridWidth: 0.95

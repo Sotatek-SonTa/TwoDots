@@ -23,3 +23,5 @@ MonoBehaviour:
   - dotType: 6
     quantity: 20
   blockedCells: []
+  maxGridHeight: 1
+  maxGridWidth: 1

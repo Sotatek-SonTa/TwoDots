@@ -22,7 +22,7 @@ MonoBehaviour:
     quantity: 30
   - dotType: 13
     quantity: 30
-  - dotType: 9
+  - dotType: 4
     quantity: 30
   blockedCells:
   - {x: 1, y: 2}
@@ -43,3 +43,5 @@ MonoBehaviour:
   - {x: 2, y: 7}
   - {x: 3, y: 7}
   - {x: 4, y: 7}
+  maxGridHeight: 1
+  maxGridWidth: 1

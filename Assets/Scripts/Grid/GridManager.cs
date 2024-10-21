@@ -19,6 +19,8 @@ namespace TwoDotGridManager
         [SerializeField] public int columns;
         [SerializeField] public int rows;
         [SerializeField] public float titleSpacing = 1f;
+        [SerializeField] public float maxGridHeight;
+         [SerializeField] public float maxGridWidth;
         [SerializeField] private LevelList levelList;
         [SerializeField] public LevelData levelData;
 
@@ -38,7 +40,7 @@ namespace TwoDotGridManager
 
         [Header("Line Renderer")]
         [SerializeField] LineRenderer linePrefab;
-        [SerializeField] List<LineRenderer> lineRenderers = new List<LineRenderer>();
+        [SerializeField] public List<LineRenderer> lineRenderers = new List<LineRenderer>();
         [SerializeField] LineRenderer currentLineRender;
 
         [Header("Sprite")]
@@ -52,6 +54,8 @@ namespace TwoDotGridManager
         [Header("Manager")]
         [SerializeField] private UIManager uiManager;
         [SerializeField] private LevelManager levelManager;
+        [SerializeField] public bool isTouching = false;
+        [SerializeField] public bool isHandlindPointerUp = false;
 
         private void Start()
         {
@@ -96,6 +100,7 @@ namespace TwoDotGridManager
             ApplyLevelData();
             requirementBar.SetRequirement(levelData);
             uiManager.moveLeft = levelData.numberOfMoves;
+            isTouching = false;
         }
         private void ApplyLevelData()
         {
@@ -112,14 +117,16 @@ namespace TwoDotGridManager
             RectTransform dotRect = dotPrefab.GetComponent<RectTransform>();
 
             Vector2 screenSize = new Vector2(Screen.width, Screen.height);
-            float maxGridWidth = screenSize.x * 0.6f;
-            float maxGridHeight = screenSize.y * 0.6f;
-
+           
+               maxGridWidth = screenSize.x * levelList.levels[levelIndex].maxGridWidth;
+               maxGridHeight = screenSize.y * levelList.levels[levelIndex].maxGridHeight;
+        
+            
+        
             float dotWidth = maxGridWidth / columns - titleSpacing;
-            float dotHeigth = maxGridHeight / rows - titleSpacing;
+           
 
-            float dotSize = Mathf.Min(dotWidth, dotHeigth);
-            dotRect.sizeDelta = new Vector2(dotSize, dotSize);
+            dotRect.sizeDelta = new Vector2(dotWidth, dotWidth*1.3f);
 
 
             float gridWidth = columns * (dotRect.sizeDelta.x + titleSpacing) - titleSpacing;
@@ -255,17 +262,10 @@ namespace TwoDotGridManager
                     HandleSelectedDots();
                 }
                 uiManager.OnMoveDone();
-                foreach (LineRenderer item in lineRenderers)
-                {
-                    Destroy(item.gameObject);
-                }
             }
-            foreach (LineRenderer line in lineRenderers)
-            {
-                Destroy(line.gameObject);
-            }
-            lineRenderers.Clear();
+            ClearAndDestroyLineRenderer();
             selectedDots.Clear();
+            isHandlindPointerUp = false;
             if (uiManager.moveLeft == 0 && !requirementBar.trackingCondition)
             {
                 LooseUI.SetActive(true);
@@ -305,14 +305,6 @@ namespace TwoDotGridManager
                 AddLineRenderer(dot);
             }
         }
-        public void OnDotExit(Dot dot)
-        {
-            if (selectedDots.Count > 1 && selectedDots[selectedDots.Count - 2] == dot)
-            {
-                selectedDots.RemoveAt(selectedDots.Count - 1);
-
-            }
-        }
         #endregion
 
         #region HandleSelectedDot
@@ -324,11 +316,7 @@ namespace TwoDotGridManager
                 dotMatrix[dot.row, dot.column] = null;
                 Destroy(dot.gameObject);
             }
-            foreach (LineRenderer line in lineRenderers)
-            {
-                Destroy(line.gameObject);
-            }
-            lineRenderers.Clear();
+            ClearAndDestroyLineRenderer();
             FillEmptySpace();
         }
         private void HandeldLoopSelectedDot()
@@ -339,11 +327,7 @@ namespace TwoDotGridManager
                 dotMatrix[dot.row, dot.column] = null;
                 Destroy(dot.gameObject);
             }
-            foreach (LineRenderer line in lineRenderers)
-            {
-                Destroy(line.gameObject);
-            }
-            lineRenderers.Clear();
+            ClearAndDestroyLineRenderer();
             FillEmptySpace();
         }
         #endregion
@@ -359,7 +343,7 @@ namespace TwoDotGridManager
                                                          startPos.y - row * (rectTransform.sizeDelta.y + titleSpacing));
 
             Image blockImage = newBlock.AddComponent<Image>();
-            blockImage.sprite = blockCell; // Set the image color to white
+            blockImage.sprite = blockCell;
         }
 
         public void ClearBlockedCells()
@@ -437,6 +421,14 @@ namespace TwoDotGridManager
             dot.transform.position = new Vector3(dot.transform.position.x, dot.transform.position.y, 0);
             currentLineRender.SetPosition(0, dot.transform.position);
             lineRenderers.Add(currentLineRender);
+        }
+        public void ClearAndDestroyLineRenderer()
+        {
+             foreach (LineRenderer line in lineRenderers)
+            {
+                Destroy(line.gameObject);
+            }
+            lineRenderers.Clear();
         }
         #endregion
 

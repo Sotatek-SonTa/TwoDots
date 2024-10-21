@@ -20,4 +20,6 @@ MonoBehaviour:
   dotTypeRequirements:
   - dotType: 0
     quantity: 25
-  blockedCell: []
+  blockedCells: []
+  maxGridHeight: 0.73
+  maxGridWidth: 0.73

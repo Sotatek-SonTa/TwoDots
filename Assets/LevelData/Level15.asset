@@ -22,4 +22,6 @@ MonoBehaviour:
     quantity: 15
   - dotType: 0
     quantity: 15
-  blockedCell: []
+  blockedCells: []
+  maxGridHeight: 0.66
+  maxGridWidth: 0.66
