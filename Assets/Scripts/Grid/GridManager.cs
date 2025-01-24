@@ -268,10 +268,12 @@ namespace TwoDotGridManager
             isHandlindPointerUp = false;
             if (uiManager.moveLeft == 0 && !requirementBar.trackingCondition)
             {
+                SoundManager.Instance.PlaySound(SoundName.LOOSE,0.3f);
                 LooseUI.SetActive(true);
             }
             if (requirementBar.trackingCondition)
             {
+                SoundManager.Instance.PlaySound(SoundName.WIN,0.3f);
                 WinUI.SetActive(true);
             }
         }
@@ -310,6 +312,7 @@ namespace TwoDotGridManager
         #region HandleSelectedDot
         private void HandleSelectedDots()
         {
+            SoundManager.Instance.PlaySound(SoundName.MATCHING,0.3f);
             requirementBar.UpdateCollectedDots(selectedDots[0].dotType, selectedDots.Count);
             foreach (var dot in selectedDots)
             {
@@ -321,6 +324,7 @@ namespace TwoDotGridManager
         }
         private void HandeldLoopSelectedDot()
         {
+             SoundManager.Instance.PlaySound(SoundName.MATCHING,0.3f);
             requirementBar.UpdateCollectedDots(selectedDots[0].dotType, selectedDots.Count - 1);
             foreach (var dot in selectedDots)
             {
@@ -397,6 +401,7 @@ namespace TwoDotGridManager
             endDot.transform.position = new Vector3(endDot.transform.position.x, endDot.transform.position.y, 0);
             currentLineRender.SetPosition(0, startdot.transform.position);
             currentLineRender.SetPosition(1, endDot.transform.position);
+            SoundManager.Instance.PlaySound(SoundName.SELECTDOT,0.3f);
         }
         public void RemoveLastLine()
         {
@@ -411,6 +416,7 @@ namespace TwoDotGridManager
                 mousePosition.z = 0;
                 currentLineRender = lastLine2nd;
                 currentLineRender.SetPosition(0, selectedDots[selectedDots.Count - 1].transform.position);
+                SoundManager.Instance.PlaySound(SoundName.SELECTDOT,0.3f);
             }
         }
         public void AddLineRenderer(Dot dot)

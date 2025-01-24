@@ -12,6 +12,7 @@ namespace TwodDotUIManager
         [SerializeField] public Requirementbar requirementbar;
         [SerializeField] public int moveLeft;
         [SerializeField] public int levelIndex;
+        
 
         public void ShowPopUpWin()
         {
