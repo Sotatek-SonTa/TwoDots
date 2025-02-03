@@ -11,7 +11,7 @@ using TwoDotsLevelList;
 using TwoDotsLevelData;
 
 
-namespace TwoDotGridManager 
+namespace TwoDotGridManager
 {
     public class GridManager : MonoBehaviour
     {
@@ -20,7 +20,7 @@ namespace TwoDotGridManager
         [SerializeField] public int rows;
         [SerializeField] public float titleSpacing = 1f;
         [SerializeField] public float maxGridHeight;
-         [SerializeField] public float maxGridWidth;
+        [SerializeField] public float maxGridWidth;
         [SerializeField] private LevelList levelList;
         [SerializeField] public LevelData levelData;
 
@@ -117,16 +117,16 @@ namespace TwoDotGridManager
             RectTransform dotRect = dotPrefab.GetComponent<RectTransform>();
 
             Vector2 screenSize = new Vector2(Screen.width, Screen.height);
-           
-               maxGridWidth = screenSize.x * levelList.levels[levelIndex].maxGridWidth;
-               maxGridHeight = screenSize.y * levelList.levels[levelIndex].maxGridHeight;
-        
-            
-        
-            float dotWidth = maxGridWidth / columns - titleSpacing;
-           
 
-            dotRect.sizeDelta = new Vector2(dotWidth, dotWidth*1.3f);
+            maxGridWidth = screenSize.x * levelList.levels[levelIndex].maxGridWidth;
+            maxGridHeight = screenSize.y * levelList.levels[levelIndex].maxGridHeight;
+
+
+
+            float dotWidth = maxGridWidth / columns - titleSpacing;
+
+
+            dotRect.sizeDelta = new Vector2(dotWidth, dotWidth * 1.3f);
 
 
             float gridWidth = columns * (dotRect.sizeDelta.x + titleSpacing) - titleSpacing;
@@ -268,12 +268,12 @@ namespace TwoDotGridManager
             isHandlindPointerUp = false;
             if (uiManager.moveLeft == 0 && !requirementBar.trackingCondition)
             {
-                SoundManager.Instance.PlaySound(SoundName.LOOSE,0.3f);
+                SoundManager.Instance.PlaySound(SoundName.LOOSE, 0.3f);
                 LooseUI.SetActive(true);
             }
             if (requirementBar.trackingCondition)
             {
-                SoundManager.Instance.PlaySound(SoundName.WIN,0.3f);
+                SoundManager.Instance.PlaySound(SoundName.WIN, 0.3f);
                 WinUI.SetActive(true);
             }
         }
@@ -312,7 +312,7 @@ namespace TwoDotGridManager
         #region HandleSelectedDot
         private void HandleSelectedDots()
         {
-            SoundManager.Instance.PlaySound(SoundName.MATCHING,0.3f);
+            SoundManager.Instance.PlaySound(SoundName.MATCHING, 0.3f);
             requirementBar.UpdateCollectedDots(selectedDots[0].dotType, selectedDots.Count);
             foreach (var dot in selectedDots)
             {
@@ -324,7 +324,7 @@ namespace TwoDotGridManager
         }
         private void HandeldLoopSelectedDot()
         {
-             SoundManager.Instance.PlaySound(SoundName.MATCHING,0.3f);
+            SoundManager.Instance.PlaySound(SoundName.MATCHING, 0.3f);
             requirementBar.UpdateCollectedDots(selectedDots[0].dotType, selectedDots.Count - 1);
             foreach (var dot in selectedDots)
             {
@@ -401,7 +401,7 @@ namespace TwoDotGridManager
             endDot.transform.position = new Vector3(endDot.transform.position.x, endDot.transform.position.y, 0);
             currentLineRender.SetPosition(0, startdot.transform.position);
             currentLineRender.SetPosition(1, endDot.transform.position);
-            SoundManager.Instance.PlaySound(SoundName.SELECTDOT,0.3f);
+            SoundManager.Instance.PlaySound(SoundName.SELECTDOT, 0.3f);
         }
         public void RemoveLastLine()
         {
@@ -416,7 +416,7 @@ namespace TwoDotGridManager
                 mousePosition.z = 0;
                 currentLineRender = lastLine2nd;
                 currentLineRender.SetPosition(0, selectedDots[selectedDots.Count - 1].transform.position);
-                SoundManager.Instance.PlaySound(SoundName.SELECTDOT,0.3f);
+                SoundManager.Instance.PlaySound(SoundName.SELECTDOT, 0.3f);
             }
         }
         public void AddLineRenderer(Dot dot)
@@ -430,7 +430,7 @@ namespace TwoDotGridManager
         }
         public void ClearAndDestroyLineRenderer()
         {
-             foreach (LineRenderer line in lineRenderers)
+            foreach (LineRenderer line in lineRenderers)
             {
                 Destroy(line.gameObject);
             }
@@ -509,17 +509,24 @@ namespace TwoDotGridManager
         }
         private void ClearAllDotsOfColor(DotType dotType)
         {
+            int count = 0;
             for (int row = 0; row < rows; row++)
             {
                 for (int column = 0; column < columns; column++)
                 {
-                    Dot dot = dotMatrix[row, column]?.GetComponent<Dot>();
+                    Dot dot = dotMatrix[Random.Range(0,rows), Random.Range(0,columns)]?.GetComponent<Dot>();
                     if (dot != null && dot.dotType == dotType)
                     {
-                        if (!selectedDots.Contains(dot))
-                        {
-                            selectedDots.Add(dot);
-                        }
+                            if (!selectedDots.Contains(dot))
+                            {
+                                selectedDots.Add(dot);
+                                count++;
+                                if (count >= 4)
+                                {
+                                    HandeldLoopSelectedDot();
+                                    return;
+                                }
+                            }
                     }
                 }
             }
